@@ -1,12 +1,12 @@
-package Duvidas;
+package almoxarifado.nao.implementados;
 
-import Codigo.Produto;
+import almoxarifado.classes.base.Produto;
 
 /**
  *
  * @author Diego Neves Isidoro
  */
-public class Saida extends Controle {
+public class Entrada extends Controle {
     private int numero;
     private Produto pro;
     private String data;
@@ -39,4 +39,6 @@ public class Saida extends Controle {
     public String toString() {
         return "Entrada{" + "numero=" + numero + ", pro=" + pro + ", data=" + data + '}';
     }
+    
+    
 }

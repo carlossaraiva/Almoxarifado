@@ -1,9 +1,11 @@
-package Codigo;
+package almoxarifado.classes.base;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import almoxarifado.gui.JDesktop;
 
 public class Principal extends JFrame{ 
 

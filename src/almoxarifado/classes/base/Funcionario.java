@@ -1,4 +1,4 @@
-package Codigo;
+package almoxarifado.classes.base;
 
 public class Funcionario {
 	private String nome;

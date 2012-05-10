@@ -1,4 +1,4 @@
-package Codigo;
+package almoxarifado.gui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -13,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+
 
 public class JDesktop extends JFrame implements ActionListener{
 

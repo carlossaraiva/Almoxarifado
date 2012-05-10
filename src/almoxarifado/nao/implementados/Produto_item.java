@@ -1,6 +1,6 @@
-package Duvidas;
+package almoxarifado.nao.implementados;
 
-import Codigo.Produto;
+import almoxarifado.classes.base.Produto;
 
 public class Produto_item extends  Produto {
 	private double valor;

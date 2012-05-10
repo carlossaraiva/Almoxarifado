@@ -1,4 +1,4 @@
-package Codigo;
+package almoxarifado.gui;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;

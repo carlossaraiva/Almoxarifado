@@ -1,4 +1,4 @@
-package Codigo;
+package almoxarifado.classes.base;
 /**
  *
  * @author Diego Neves Isidoro
