@@ -3,6 +3,8 @@ package Codigo;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,7 +23,10 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 	private JButton btnAdicionar;
 	private JButton btnLimpar;
 	private JButton btnExcluir;
+	private JScrollPane scrollPane;
 	
+	
+	//Construtores
 	public JFuncionario() {		
 		setPainel();		
 	}		
@@ -32,6 +37,7 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		setModelFuncionarios();
 	}
 	
+	//Getters e setters
 	public void setModelFuncionarios(){
 		for(Funcionario f : funcionarios){
 			modelFuncionarios.addElement(f.getNome());
@@ -76,23 +82,40 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		textField.setBounds(429, 64, 189, 20);
 		
 		textField.setColumns(10);
-				
-		listFuncionario = new JList(modelFuncionarios);
-		listFuncionario.setBounds(429, 94, 189, 253);
-		listFuncionario.addListSelectionListener(this);
+		
 		
 		add(lblNomeCompleto);
 		add(lblRegistro);
 		add(textField);
-		add(listFuncionario);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(429, 94, 189, 253);
+		add(scrollPane);
+		listFuncionario = new JList(modelFuncionarios);
+		scrollPane.setViewportView(listFuncionario);
+		listFuncionario.addListSelectionListener(this);
+		listFuncionario.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		listFuncionario.setLayoutOrientation(JList.VERTICAL);
+		listFuncionario.setVisibleRowCount(-1);
 		add(btnLimpar);
-	
+		
+		ButtonGroup sexo = new ButtonGroup();
+		JRadioButton rdbtnM = new JRadioButton("M");
+		rdbtnM.setBounds(24, 207, 141, 23);
+		add(rdbtnM);
+		JRadioButton rdbtnF = new JRadioButton("F");
+		rdbtnF.setBounds(24, 242, 141, 23);
+		add(rdbtnF);
+		sexo.add(rdbtnF);
+		sexo.add(rdbtnM);
+
 	}
 	
 	public ArrayList<Funcionario> getFuncionarios(){
 		return this.funcionarios;
 	}
 	
+	//Listeners
 	public void valueChanged(ListSelectionEvent e){
 		
 		System.out.println(listFuncionario.getSelectedIndex());
@@ -130,6 +153,7 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		showArray();
 	}
 	
+	//debugagem
 	public void showArray(){
 	
 		for(Funcionario f: funcionarios){			

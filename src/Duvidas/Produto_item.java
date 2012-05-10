@@ -1,4 +1,6 @@
-package Codigo;
+package Duvidas;
+
+import Codigo.Produto;
 
 public class Produto_item extends  Produto {
 	private double valor;

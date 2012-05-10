@@ -1,9 +1,12 @@
-package Codigo;
+package Duvidas;
+
+import Codigo.Produto;
+
 /**
  *
  * @author Diego Neves Isidoro
  */
-public class Entrada extends Controle {
+public class Saida extends Controle {
     private int numero;
     private Produto pro;
     private String data;
@@ -36,6 +39,4 @@ public class Entrada extends Controle {
     public String toString() {
         return "Entrada{" + "numero=" + numero + ", pro=" + pro + ", data=" + data + '}';
     }
-    
-    
 }

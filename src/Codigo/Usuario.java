@@ -9,6 +9,7 @@ public class Usuario {
     private int numIdentificacao;
     private String senha;
     private String login;
+    private String sexo;
     
     public Usuario(){}
 
@@ -30,6 +31,20 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
+    
+    public void setSexo(String sexo){
+    	if (sexo == "'M" || sexo == "F" ){
+    		this.sexo = sexo;
+    	}
+    	else{
+    		System.out.println("Valor inv‡lido para sexo.");
+    	}
+    }
+    
+    public String getSexo(){
+    	return this.sexo;
+    }
+    
 
     public void setNome(String nome) {
         this.nome = nome;

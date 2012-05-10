@@ -5,24 +5,26 @@ package Codigo;
  * @author Diego Neves Isidoro
  */
 public class Fornecedor {
-    private String nome;
+    private String RzSocial;
     private String telefone;
     private String endereco;
+    private String CNPJ;
    
     public Fornecedor(){}
 
-    public Fornecedor(String nome, String telefone) {
-        this.nome = nome;
+    public Fornecedor(String RzSocial, String telefone, String CNPJ, String endereco) {
+        this.RzSocial = RzSocial;
         this.telefone = telefone;
+        this.CNPJ = CNPJ;
     }
     
 
-    public String getNome() {
-        return nome;
+    public String getRzSocial() {
+        return RzSocial;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setRzSocial(String RzSocial) {
+        this.RzSocial = RzSocial;
     }
 
     public String getTelefone() {
@@ -31,6 +33,14 @@ public class Fornecedor {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+    
+    public void setCNPJ(String CNPJ){
+    	this.CNPJ = CNPJ;
+    }
+    
+    public String getCNPJ(){
+    	return this.CNPJ;
     }
     
     public String getEndereco() {
@@ -43,6 +53,6 @@ public class Fornecedor {
 
     @Override
     public String toString() {
-        return "Fornecedor{" + "nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + '}';
+        return "Fornecedor{" + "nome=" + RzSocial + ", telefone=" + telefone + ", endereco=" + endereco + '}';
     }   
 }

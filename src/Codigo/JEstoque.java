@@ -2,6 +2,9 @@ package Codigo;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class JEstoque extends JPanel {
 
@@ -10,9 +13,9 @@ public class JEstoque extends JPanel {
 	public JEstoque() {
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(323, 271, 46, 14);
-		add(lblNewLabel);
+		JButton btnGerarSada = new JButton("Gerar Sa\u00EDda");
+		btnGerarSada.setBounds(44, 391, 117, 29);
+		add(btnGerarSada);
 
 	}
 }

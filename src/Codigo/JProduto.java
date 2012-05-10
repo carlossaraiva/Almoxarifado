@@ -1,79 +1,152 @@
 package Codigo;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JList;
+public class JProduto extends JPanel implements ActionListener, ListSelectionListener {
 
-public class JProduto extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList <Produto> produtos = new ArrayList<Produto>();
 	private DefaultListModel modelProdutos = new DefaultListModel();
 	
-	private JTextField txtNome;
+	private JTextField txtNomeProduto;
 	private JTextField txtMarca;
+	private JTextField textField;	
+	private JList listProduto;	
 	private JButton btnAdicionar;
-	private JList listProdutos;
-
+	private JButton btnLimpar;
+	private JButton btnExcluir;
 	
-	public JProduto() {
-		setLayout(null);
+	private JLabel lblNomeProduto;
+	private JLabel lblMarca;
+	private JScrollPane scrollPane;
+	
+	//Construtores
+	public JProduto() {		
+		setPainel();		
+	}		
+	
+	public JProduto(ArrayList<Produto> produtos){		
+		setPainel();
+		this.produtos = produtos;		
+		setModelProdutos();
+	}
+	
+	//Setters e getters
+	
+	public void setModelProdutos(){
+		for(Produto p : produtos){
+			modelProdutos.addElement(p.getNome());
+		}	
+	}
+	
+	private void setPainel(){
+		setLayout(null);		
 		
 		btnAdicionar = new JButton("Adicionar");
-		btnAdicionar.addActionListener(this);
-		btnAdicionar.setBounds(10, 337, 89, 23);
+		btnAdicionar.setBounds(10, 372, 89, 23);
 		add(btnAdicionar);
 		btnAdicionar.addActionListener(this);
-		
-		txtNome = new JTextField();
-		txtNome.setBounds(10, 82, 258, 20);
-		add(txtNome);
-		txtNome.setColumns(10);
-		
-		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setBounds(10, 57, 46, 14);
-		add(lblNome);
+				
+		txtNomeProduto = new JTextField();
+		txtNomeProduto.setBounds(10, 64, 220, 20);
+		add(txtNomeProduto);
+		txtNomeProduto.setColumns(10);
 		
 		txtMarca = new JTextField();
-		txtMarca.setBounds(10, 157, 258, 20);
+		txtMarca.setBounds(10, 116, 220, 20);
 		add(txtMarca);
 		txtMarca.setColumns(10);
+				
+		btnExcluir = new JButton("Excluir");
+		btnExcluir.setBounds(429, 360, 89, 23);
+		btnExcluir.addActionListener(this);
+		btnExcluir.setEnabled(false);
+		add(btnExcluir);	
 		
-		JLabel lblMarca = new JLabel("Marca:");
-		lblMarca.setBounds(10, 132, 46, 14);
+		btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(this);
+		btnLimpar.setBounds(123, 372, 89, 23);
+					
+		lblNomeProduto = new JLabel("Nome do produto:");
+		lblNomeProduto.setBounds(10, 39, 89, 14);
+				
+		lblMarca = new JLabel("Marca:");
+		lblMarca.setBounds(10, 95, 46, 14);
+				
+		textField = new JTextField();
+		textField.setBounds(429, 64, 189, 20);
+		
+		textField.setColumns(10);
+		
+		add(lblNomeProduto);
 		add(lblMarca);
+		add(textField);
 		
-		listProdutos = new JList(modelProdutos);
-		listProdutos.setBounds(415, 84, 207, 295);
-		add(listProdutos);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(429, 94, 189, 253);
+		add(scrollPane);
 		
-		JButton btnExcluir = new JButton("Excluir");
-		btnExcluir.setBounds(425, 390, 89, 23);
-		add(btnExcluir);
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnAdicionar){
-			Produto p = new Produto();		
-			p.setNome(txtNome.getText());						
-			p.setMarca(txtMarca.getText());
-			produtos.add(p);			
-			modelProdutos.addElement(txtNome.getText());
-			txtNome.setText(null);
-			txtMarca.setText(null);
-		}
+		listProduto= new JList(modelProdutos);
+		scrollPane.setViewportView(listProduto);
+		listProduto.addListSelectionListener(this);
+		add(btnLimpar);
+	
 	}
 	
 	public ArrayList<Produto> getProdutos(){
-		return produtos;
+		return this.produtos;
+	}
+	
+	//Listeners
+	public void valueChanged(ListSelectionEvent e){
+		
+		System.out.println(listProduto.getSelectedIndex());
+		
+	    if (e.getValueIsAdjusting() == false) {
+
+	        if (listProduto.getSelectedIndex() == -1) {
+	        //No selection, disable fire button.
+	            btnExcluir.setEnabled(false);
+
+	        } else {
+	        //Selection, enable the fire button.
+	            btnExcluir.setEnabled(true);
+	        }		    
+	    }		
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+	
+		if (e.getSource() == btnAdicionar){
+			Produto p = new Produto();		
+			p.setNome(txtNomeProduto.getText());			
+			modelProdutos.addElement(p.getNome());
+			p.setMarca(txtMarca.getText());
+			produtos.add(p);						
+			txtNomeProduto.setText(null);
+			txtMarca.setText(null);			
+		}
+		
+		if(e.getSource() == btnExcluir){
+			produtos.remove(listProduto.getSelectedIndex());
+			modelProdutos.remove(listProduto.getSelectedIndex());			
+		}
+		
+		showArray();
+	}
+	
+	//debugem
+	public void showArray(){
+	
+		for(Produto p: produtos){			
+			System.out.println(p.getNome() + p.getMarca());
+					
+		}
 	}
 }
