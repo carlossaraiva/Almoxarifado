@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import almoxarifado.classes.base.Fornecedor;
+import almoxarifado.classes.Fornecedor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

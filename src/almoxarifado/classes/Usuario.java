@@ -1,4 +1,4 @@
-package almoxarifado.classes.base;
+package almoxarifado.classes;
 
 /**
  *

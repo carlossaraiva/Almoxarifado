@@ -1,6 +1,6 @@
 package almoxarifado.nao.implementados;
 
-import almoxarifado.classes.base.Produto;
+import almoxarifado.classes.Produto;
 
 /**
  *

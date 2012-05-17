@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import almoxarifado.classes.base.Funcionario;
+import almoxarifado.classes.Funcionario;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -26,7 +26,8 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 	private JButton btnLimpar;
 	private JButton btnExcluir;
 	private JScrollPane scrollPane;
-	
+	private JRadioButton rdbtnM;
+	private JRadioButton rdbtnF;
 	
 	//Construtores
 	public JFuncionario() {		
@@ -102,10 +103,10 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		add(btnLimpar);
 		
 		ButtonGroup sexo = new ButtonGroup();
-		JRadioButton rdbtnM = new JRadioButton("M");
+		rdbtnM = new JRadioButton("M");
 		rdbtnM.setBounds(24, 207, 141, 23);
 		add(rdbtnM);
-		JRadioButton rdbtnF = new JRadioButton("F");
+		rdbtnF = new JRadioButton("F");
 		rdbtnF.setBounds(24, 242, 141, 23);
 		add(rdbtnF);
 		sexo.add(rdbtnF);
@@ -142,6 +143,15 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 			f.setNome(txtFuncionario.getText());			
 			modelFuncionarios.addElement(f.getNome());
 			f.setRegistro(txtRegistro.getText());
+			
+			if(rdbtnM.isSelected()== true){
+				f.setSexo("M");
+				
+			}
+			else{
+				f.setSexo("F");
+			}
+			
 			funcionarios.add(f);						
 			txtFuncionario.setText(null);
 			txtRegistro.setText(null);			
@@ -159,7 +169,7 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 	public void showArray(){
 	
 		for(Funcionario f: funcionarios){			
-			System.out.println(f.getNome() + f.getRegistro());
+			System.out.println(f.getNome() + f.getRegistro() + f.getSexo());
 					
 		}
 	}
