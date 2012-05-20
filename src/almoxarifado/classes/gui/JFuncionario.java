@@ -1,33 +1,48 @@
-package almoxarifado.gui;
+package almoxarifado.classes.gui;
 
-import javax.swing.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import almoxarifado.classes.Funcionario;
-
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
+import almoxarifado.classes.logico.Funcionario;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
 public class JFuncionario extends JPanel implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();
-	private DefaultListModel modelFuncionarios = new DefaultListModel();
+	private DefaultListModel<String> modelFuncionarios = new DefaultListModel<String>();
 	
 	private JTextField txtFuncionario;
 	private JTextField txtRegistro;
 	private JTextField textField;	
-	private JList listFuncionario;	
+	private JList<String> listFuncionario;	
 	private JButton btnAdicionar;
 	private JButton btnLimpar;
 	private JButton btnExcluir;
 	private JScrollPane scrollPane;
 	private JRadioButton rdbtnM;
 	private JRadioButton rdbtnF;
+	private JPanel borderSexo;
 	
 	//Construtores
 	public JFuncionario() {		
@@ -85,7 +100,26 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		textField.setBounds(429, 64, 189, 20);
 		
 		textField.setColumns(10);
-		
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) 
+			{
+				modelFuncionarios.clear();
+				Funcionario f = new Funcionario();
+				ResultSet result = f.buscaFuncionario(textField.getText());
+				try
+				{
+					while(result.next())
+					{
+						modelFuncionarios.addElement(result.getString("forNome"));
+					}
+				}
+				catch(SQLException teste)
+				{
+					System.out.println("Erro"+teste.getErrorCode());
+				}
+			}
+		});
 		
 		add(lblNomeCompleto);
 		add(lblRegistro);
@@ -94,7 +128,7 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(429, 94, 189, 253);
 		add(scrollPane);
-		listFuncionario = new JList(modelFuncionarios);
+		listFuncionario = new JList<String>(modelFuncionarios);
 		scrollPane.setViewportView(listFuncionario);
 		listFuncionario.addListSelectionListener(this);
 		listFuncionario.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -103,14 +137,20 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		add(btnLimpar);
 		
 		ButtonGroup sexo = new ButtonGroup();
+		
+		borderSexo = new JPanel();
+		borderSexo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Sexo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		borderSexo.setBounds(10, 160, 116, 88);
+		add(borderSexo);
+		borderSexo.setLayout(null);
 		rdbtnM = new JRadioButton("M");
-		rdbtnM.setBounds(24, 207, 141, 23);
-		add(rdbtnM);
-		rdbtnF = new JRadioButton("F");
-		rdbtnF.setBounds(24, 242, 141, 23);
-		add(rdbtnF);
-		sexo.add(rdbtnF);
+		rdbtnM.setBounds(6, 20, 141, 32);
+		borderSexo.add(rdbtnM);
 		sexo.add(rdbtnM);
+		rdbtnF = new JRadioButton("F");
+		rdbtnF.setBounds(6, 55, 141, 23);
+		borderSexo.add(rdbtnF);
+		sexo.add(rdbtnF);
 
 	}
 	

@@ -1,4 +1,4 @@
-package almoxarifado.gui;
+package almoxarifado.classes.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -53,5 +53,7 @@ public class JEntrada extends JFrame {
 		JLabel lblQtde = new JLabel("Qtde.:");
 		lblQtde.setBounds(10, 73, 46, 14);
 		contentPane.add(lblQtde);
+		
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 }

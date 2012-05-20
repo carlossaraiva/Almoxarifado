@@ -1,13 +1,18 @@
-package almoxarifado.gui;
+package almoxarifado.classes.gui;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import almoxarifado.classes.Fornecedor;
+import almoxarifado.classes.logico.Fornecedor;
+import almoxarifado.classes.logico.Funcionario;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class JFornecedor extends JPanel implements ActionListener, ListSelectionListener {
@@ -15,12 +20,12 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList <Fornecedor> fornecedores = new ArrayList<Fornecedor>();
-	private DefaultListModel modelFornecedores = new DefaultListModel();
+	private DefaultListModel<String> modelFornecedores = new DefaultListModel<String>();
 	
 	private JTextField txtRzSocial;
 	private JTextField txtCNPJ;
 	private JTextField textField;	
-	private JList listFornecedor;	
+	private JList<String> listFornecedor;	
 	private JButton btnAdicionar;
 	private JButton btnLimpar;
 	private JButton btnExcluir;
@@ -82,6 +87,26 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 		textField.setBounds(429, 64, 189, 20);
 		
 		textField.setColumns(10);
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) 
+			{
+				modelFornecedores.clear();
+				Funcionario f = new Funcionario();
+				ResultSet result = f.buscaFuncionario(textField.getText());
+				try
+				{
+					while(result.next())
+					{
+						modelFornecedores.addElement(result.getString("forNome"));
+					}
+				}
+				catch(SQLException teste)
+				{
+					System.out.println("Erro"+teste.getErrorCode());
+				}
+			}
+		});
 		
 		add(lblNomeCompleto);
 		add(lblRegistro);
@@ -91,7 +116,7 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 		scrollPane.setBounds(429, 94, 189, 253);
 		add(scrollPane);
 		
-		listFornecedor = new JList(modelFornecedores);
+		listFornecedor = new JList<String>(modelFornecedores);
 		scrollPane.setViewportView(listFornecedor);
 		listFornecedor.addListSelectionListener(this);
 		add(btnLimpar);

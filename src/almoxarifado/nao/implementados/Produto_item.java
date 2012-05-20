@@ -1,6 +1,6 @@
 package almoxarifado.nao.implementados;
 
-import almoxarifado.classes.Produto;
+import almoxarifado.classes.logico.Produto;
 
 public class Produto_item extends  Produto {
 	private double valor;

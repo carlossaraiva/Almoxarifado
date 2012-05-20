@@ -1,4 +1,4 @@
-package almoxarifado.gui;
+package almoxarifado.classes.gui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -13,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import java.awt.Component;
 
 
 public class JDesktop extends JFrame implements ActionListener{
@@ -107,16 +108,17 @@ public class JDesktop extends JFrame implements ActionListener{
 		frmProduto = new JInternalFrame("Produto");
 		frmProduto.setFocusable(false);
 		frmProduto.setBounds(139, 70, 646, 500);
-		frmProduto.setClosable(false);
+		frmProduto.setClosable(true);
 		jproduto = new JProduto();
 		frmProduto.getContentPane().add(jproduto);
 		
 		//Frame Estoque, instancia a janela interna e inicia seus componentes;
-		frmEstoque = new JInternalFrame("Estoque");
-		frmEstoque.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		frmEstoque.setBounds(322, 100, 646, 500);
+		frmEstoque = new JInternalFrame("Controle de Estoque");
+		frmEstoque.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		//frmEstoque.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		frmEstoque.setBounds(331, 11, 709, 554);
 		frmEstoque.setFocusable(false);
-		frmEstoque.setClosable(true);
+		frmEstoque.setClosable(false);
         jestoque = new JEstoque();
         frmEstoque.getContentPane().add(jestoque);
 	
@@ -128,33 +130,31 @@ public class JDesktop extends JFrame implements ActionListener{
 		frmFuncionario.setClosable(true);
 		jfuncionario = new JFuncionario();
 		frmFuncionario.getContentPane().add(jfuncionario);
-				
-		//Frame Fornecedor, instancia a janela interna e inicia seus componentes.
-		frmFornecedor = new JInternalFrame("Fornecedor");
-		frmFornecedor.setBounds(100, 100, 646, 500);
-		frmFornecedor.setClosable(true);
-		frmFornecedor.setFocusable(false);
-		frmFornecedor.getContentPane().setBounds(new Rectangle(0, 0, 0, 0));
-		frmFornecedor.setClosable(true);
-		jfornecedor = new JFornecedor();
-		frmFornecedor.getContentPane().add(jfornecedor);
-		
-		//Adiciona os frames internos na desktop do aplicativo.
-		desktop.add(frmFornecedor);
 		desktop.add(frmProduto);
 		desktop.add(frmFuncionario);
 		desktop.add(frmEstoque);
 		//desktopPane.add(frmEstoque);
 		//define os frames internos invisiveis por padrão na inicialização.
 		frmEstoque.setVisible(true);
-		frmFornecedor.setVisible(false);
 		frmProduto.setVisible(false);
-		
-		//Define padrão para o fechaemento dos frames interno, esconder ao fechar ao invés de descartar a janela.
-        frmFornecedor.setDefaultCloseOperation(HIDE_ON_CLOSE);
         frmProduto.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		frmEstoque.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		frmFuncionario.setDefaultCloseOperation(HIDE_ON_CLOSE);
+		
+		//Frame Fornecedor, instancia a janela interna e inicia seus componentes.
+		frmFornecedor = new JInternalFrame("Fornecedor");
+		frmFornecedor.setBounds(0, 0, 646, 500);
+		desktop.add(frmFornecedor);
+		frmFornecedor.setClosable(true);
+		frmFornecedor.setFocusable(false);
+		frmFornecedor.getContentPane().setBounds(new Rectangle(0, 0, 0, 0));
+		frmFornecedor.setClosable(true);
+		jfornecedor = new JFornecedor();
+		frmFornecedor.getContentPane().add(jfornecedor);
+		frmFornecedor.setVisible(false);
+		
+		//Define padrão para o fechaemento dos frames interno, esconder ao fechar ao invés de descartar a janela.
+        frmFornecedor.setDefaultCloseOperation(HIDE_ON_CLOSE);
 
 		
         /*

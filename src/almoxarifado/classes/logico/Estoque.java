@@ -1,4 +1,4 @@
-package almoxarifado.classes;
+package almoxarifado.classes.logico;
 /**
  *
  * @author Diego Neves Isidoro

@@ -1,26 +1,35 @@
-package almoxarifado.gui;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import almoxarifado.classes.Produto;
+package almoxarifado.classes.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import almoxarifado.classes.logico.Produto;
 
 public class JProduto extends JPanel implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList <Produto> produtos = new ArrayList<Produto>();
-	private DefaultListModel modelProdutos = new DefaultListModel();
-	
+	private DefaultListModel<String> modelProdutos = new DefaultListModel<String>();
 	private JTextField txtNomeProduto;
 	private JTextField txtMarca;
 	private JTextField textField;	
-	private JList listProduto;	
+	private JList<String> listProduto;	
 	private JButton btnAdicionar;
 	private JButton btnLimpar;
 	private JButton btnExcluir;
@@ -83,6 +92,27 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 		lblMarca.setBounds(10, 95, 46, 14);
 				
 		textField = new JTextField();
+
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) 
+			{
+				modelProdutos.clear();
+				Produto pro = new Produto();
+				ResultSet result = pro.buscaProduto(textField.getText());
+				try
+				{
+					while(result.next())
+					{
+						modelProdutos.addElement(result.getString("forNome"));
+					}
+				}
+				catch(SQLException teste)
+				{
+					System.out.println("Erro"+teste.getErrorCode());
+				}
+			}
+		});
 		textField.setBounds(429, 64, 189, 20);
 		
 		textField.setColumns(10);
@@ -95,7 +125,7 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 		scrollPane.setBounds(429, 94, 189, 253);
 		add(scrollPane);
 		
-		listProduto= new JList(modelProdutos);
+		listProduto= new JList<String>(modelProdutos);
 		scrollPane.setViewportView(listProduto);
 		listProduto.addListSelectionListener(this);
 		add(btnLimpar);
@@ -122,6 +152,9 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 	            btnExcluir.setEnabled(true);
 	        }		    
 	    }		
+	    if (e.getSource()==listProduto){
+	    	txtNomeProduto.setText((String)listProduto.getSelectedValue());
+	    }
 	}
 	
 	public void actionPerformed(ActionEvent e) {

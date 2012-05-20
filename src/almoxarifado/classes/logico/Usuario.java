@@ -1,4 +1,8 @@
-package almoxarifado.classes;
+package almoxarifado.classes.logico;
+
+import java.sql.ResultSet;
+
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -70,6 +74,41 @@ public class Usuario {
     public String toString() {
         return "Usuario{" + "nome=" + nome + ", numIdentificacao=" + numIdentificacao + ", senha=" + senha + ", login=" + login + '}';
     }
+    
+    public void insereUsuario()
+    {
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "insert into Usuario values (forCodigo.nextval,'"+this.nome+"','"+this.login+"','"+this.numIdentificacao+"','"+this.senha+"','"+this.sexo+"')";
+        conn.executaSQL(sql);
+        conn.desconecta();
+    }
+    public void alterarFornecedor()
+    {
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "update Usuario set forNome = '"+this.nome+"', forNumIdentificacao = '"+this.numIdentificacao+"', forLogin = '"+this.login+"', forSenha = '"+this.sexo+"'where forSenha = 2";
+        conn.executaSQL(sql);
+        conn.desconecta();
+    }
+    public void excluirFornecedor(String nome)
+    {
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "delete from Usuario where forNome = '"+nome+"'";
+        conn.executaSQL(sql);
+        conn.desconecta();
+    }
+    public ResultSet buscaFornecedor(String nome)
+    {
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "select * from Usuario where forNome like '%"+nome+"%'";
+        JOptionPane.showMessageDialog(null, sql);
+        ResultSet result = conn.executaBusca(sql);
+        return result;
+    }
+     
     
     
 }
