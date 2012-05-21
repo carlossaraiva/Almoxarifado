@@ -12,7 +12,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
+import almoxarifado.classes.util.*;
+import almoxarifado.classes.util.TextClock;
 public class JEstoque extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -25,6 +26,7 @@ public class JEstoque extends JPanel implements ActionListener {
 	private JTable tblUltimasEntradas;
 	private JTable tblUltimasSaidas;
 	private JTable tblEstoqueMinimo;
+	private JScrollPane scrollPane;
 	
 	public JEstoque() {
 		setLayout(null);
@@ -38,10 +40,6 @@ public class JEstoque extends JPanel implements ActionListener {
 		JLabel lblDatahora = new JLabel("Data/Hora:");
 		lblDatahora.setBounds(21, 11, 59, 14);
 		painelEstoque.add(lblDatahora);
-		
-		JLabel lbldataHoraAqui = new JLabel("(Data HOra Aqui");
-		lbldataHoraAqui.setBounds(90, 11, 79, 14);
-		painelEstoque.add(lbldataHoraAqui);
 		
 		JButton btnNovaEntrada = new JButton("Nova Entrada");
 		btnNovaEntrada.addActionListener(this);
@@ -81,6 +79,7 @@ public class JEstoque extends JPanel implements ActionListener {
 			
 		setTabelas();
 		setTabelasValores();
+		
 	}
 
 	@Override
@@ -94,17 +93,20 @@ public class JEstoque extends JPanel implements ActionListener {
 	public void setTabelas(){
 		add(tab);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBounds(21, 76, 320, 109);
 		painelEstoque.add(scrollPane);
 		
 		ultimasEntradasModel = new DefaultTableModel(5,4);
+		String nomeColunaUlEnt[] = {"Data:","Produto:","Fornecedor:","Data:"};
+		ultimasEntradasModel.setColumnIdentifiers(nomeColunaUlEnt);
 		tblUltimasEntradas= new JTable();
 		tblUltimasEntradas.setModel(ultimasEntradasModel);
 		scrollPane.setViewportView(tblUltimasEntradas);
 		add(tab);
 		tblUltimasEntradas.setGridColor(Color.white);
+		
 		
 		JScrollPane scrollPane2 = new JScrollPane();
 		scrollPane2.setViewportBorder(null);
@@ -112,6 +114,8 @@ public class JEstoque extends JPanel implements ActionListener {
 		painelEstoque.add(scrollPane2);
 		
 		ultimasSaidasModel = new DefaultTableModel(5,4);
+		String nomeColunaUlSaidas[] = {"Data:","Produto:","Funcionário:","Data:"};
+		ultimasSaidasModel.setColumnIdentifiers(nomeColunaUlSaidas);
 		tblUltimasSaidas= new JTable();
 		tblUltimasSaidas.setModel(ultimasSaidasModel);
 		scrollPane2.setViewportView(tblUltimasSaidas);
@@ -124,16 +128,42 @@ public class JEstoque extends JPanel implements ActionListener {
 		scrollPane3.setBounds(21, 241, 320, 109);
 		painelEstoque.add(scrollPane3);
 		
-		estoqueMinimoModel = new DefaultTableModel(5,4);
+		estoqueMinimoModel = new DefaultTableModel(5,2);
 		tblEstoqueMinimo= new JTable();
 		tblEstoqueMinimo.setModel(estoqueMinimoModel);
 		scrollPane3.setViewportView(tblEstoqueMinimo);
 		add(tab);
 		tblEstoqueMinimo.setGridColor(Color.white);	
 		
+		TextClock clock = new TextClock();
+		clock.setBounds(79, -1, 131, 37);
+		painelEstoque.add(clock);
+		
 	}
 	
 	public void setTabelasValores(){
+		
+		for(int linhas = 0; linhas < 5; linhas++){
+			for(int colunas = 0; colunas < 4; colunas++){
+				
+				ultimasEntradasModel.setValueAt("23/23/1099", linhas, colunas);
+			}
+		}
+		
+		for(int linhas = 0; linhas < 5; linhas++){
+			for(int colunas = 0; colunas < 4; colunas++){
+				
+				ultimasSaidasModel.setValueAt("2", linhas, colunas);
+			}
+		}
+		
+		for(int linhas = 0; linhas < 5; linhas++){
+			for(int colunas = 0; colunas < 2; colunas++){
+				
+				estoqueMinimoModel.setValueAt("2", linhas, colunas);
+			}
+		}
+		
 		
 	}
 }

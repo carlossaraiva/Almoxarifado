@@ -13,17 +13,21 @@ public class Fornecedor {
     private String telefone;
     private String endereco;
     private String CNPJ;
-   
-    public Fornecedor(){}
 
-    public Fornecedor(String RzSocial, String telefone, String CNPJ, String endereco) {
+
+    public Fornecedor(String RzSocial, String CNPJ) {
         this.nome = RzSocial;
-        this.telefone = telefone;
+        //this.telefone = telefone;
         this.CNPJ = CNPJ;
     }
     
 
-    public String getRzSocial() {
+    public Fornecedor() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public String getRzSocial() {
         return nome;
     }
 

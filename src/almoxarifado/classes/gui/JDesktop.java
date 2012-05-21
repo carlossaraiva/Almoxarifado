@@ -101,7 +101,7 @@ public class JDesktop extends JFrame implements ActionListener{
 				
 		desktop = new JDesktopPane();
 		getContentPane().add(desktop);
-		desktop.setBounds(0, 0, 1115, 680);
+		desktop.setBounds(0, 0, 1115, 300);
 		desktop.setBackground(Color.GRAY);
 						
 		//Frame Produto, instancia a janela interna e inicia seus componentes.
@@ -116,7 +116,7 @@ public class JDesktop extends JFrame implements ActionListener{
 		frmEstoque = new JInternalFrame("Controle de Estoque");
 		frmEstoque.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		//frmEstoque.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		frmEstoque.setBounds(331, 11, 709, 554);
+		frmEstoque.setBounds(331, 50, 709, 554);
 		frmEstoque.setFocusable(false);
 		frmEstoque.setClosable(false);
         jestoque = new JEstoque();

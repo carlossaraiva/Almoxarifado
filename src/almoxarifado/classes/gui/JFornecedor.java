@@ -6,21 +6,20 @@ import javax.swing.event.ListSelectionListener;
 
 import almoxarifado.classes.logico.Fornecedor;
 import almoxarifado.classes.logico.Funcionario;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class JFornecedor extends JPanel implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList <Fornecedor> fornecedores = new ArrayList<Fornecedor>();
+
 	private DefaultListModel<String> modelFornecedores = new DefaultListModel<String>();
+	private Fornecedor f;
 	
 	private JTextField txtRzSocial;
 	private JTextField txtCNPJ;
@@ -36,18 +35,6 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 		setPainel();		
 	}		
 	
-	public JFornecedor(ArrayList<Fornecedor> fornecedores){		
-		setPainel();
-		this.fornecedores = fornecedores;		
-		setModelFornecedores();
-	}
-	
-	//Getters e setters
-	public void setModelFornecedores(){
-		for(Fornecedor f : fornecedores){
-			modelFornecedores.addElement(f.getRzSocial());
-		}	
-	}
 	
 	private void setPainel(){
 		setLayout(null);		
@@ -92,8 +79,8 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 			public void keyReleased(KeyEvent arg0) 
 			{
 				modelFornecedores.clear();
-				Funcionario f = new Funcionario();
-				ResultSet result = f.buscaFuncionario(textField.getText());
+				f = new Fornecedor();
+				ResultSet result = f.buscaFornecedor(textField.getText());
 				try
 				{
 					while(result.next())
@@ -123,9 +110,6 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 	
 	}
 	
-	public ArrayList<Fornecedor> getFornecedores(){
-		return this.fornecedores;
-	}
 	
 	//Listeners
 	public void valueChanged(ListSelectionEvent e){
@@ -147,30 +131,18 @@ public class JFornecedor extends JPanel implements ActionListener, ListSelection
 	
 	public void actionPerformed(ActionEvent e) {
 	
+		
 		if (e.getSource() == btnAdicionar){
-			Fornecedor f = new Fornecedor();		
-			f.setRzSocial(txtRzSocial.getText());			
-			modelFornecedores.addElement(f.getRzSocial());
-			f.setCNPJ(txtCNPJ.getText());
-			fornecedores.add(f);						
+			f = new Fornecedor(txtRzSocial.getText(),txtCNPJ.getText());
+			f.insereFornecedor();
 			txtRzSocial.setText(null);
 			txtCNPJ.setText(null);			
 		}
 		
 		if(e.getSource() == btnExcluir){
-			fornecedores.remove(listFornecedor.getSelectedIndex());
-			modelFornecedores.remove(listFornecedor.getSelectedIndex());			
-		}
+			f.excluirFornecedor(listFornecedor.getSelectedValue());
+			
 		
-		showArray();
-	}
-	
-	//debugagem
-	public void showArray(){
-	
-		for(Fornecedor f: fornecedores){			
-			System.out.println(f.getRzSocial() + f.getCNPJ());
-					
-		}
+		}	
 	}
 }

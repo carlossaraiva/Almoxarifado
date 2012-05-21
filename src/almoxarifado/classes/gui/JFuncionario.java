@@ -23,6 +23,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import almoxarifado.classes.logico.Funcionario;
+import almoxarifado.classes.logico.Produto;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 public class JFuncionario extends JPanel implements ActionListener, ListSelectionListener {
@@ -31,8 +33,10 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 	
 	private ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();
 	private DefaultListModel<String> modelFuncionarios = new DefaultListModel<String>();
+	private String sexo;
+	private Funcionario f;
 	
-	private JTextField txtFuncionario;
+	private JTextField txtNome;
 	private JTextField txtRegistro;
 	private JTextField textField;	
 	private JList<String> listFuncionario;	
@@ -70,10 +74,10 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 		add(btnAdicionar);
 		btnAdicionar.addActionListener(this);
 				
-		txtFuncionario = new JTextField();
-		txtFuncionario.setBounds(10, 64, 220, 20);
-		add(txtFuncionario);
-		txtFuncionario.setColumns(10);
+		txtNome = new JTextField();
+		txtNome.setBounds(10, 64, 220, 20);
+		add(txtNome);
+		txtNome.setColumns(10);
 		
 		txtRegistro = new JTextField();
 		txtRegistro.setBounds(10, 116, 220, 20);
@@ -177,40 +181,28 @@ public class JFuncionario extends JPanel implements ActionListener, ListSelectio
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-	
+		
 		if (e.getSource() == btnAdicionar){
-			Funcionario f = new Funcionario();		
-			f.setNome(txtFuncionario.getText());			
-			modelFuncionarios.addElement(f.getNome());
-			f.setRegistro(txtRegistro.getText());
 			
 			if(rdbtnM.isSelected()== true){
-				f.setSexo("M");
-				
+				 sexo = "M";
 			}
 			else{
-				f.setSexo("F");
+				 sexo = "F";
 			}
 			
-			funcionarios.add(f);						
-			txtFuncionario.setText(null);
+			f = new Funcionario(txtNome.getText(),txtRegistro.getText(), sexo);
+			f.insereFuncionario();
+			txtNome.setText(null);
 			txtRegistro.setText(null);			
 		}
 		
 		if(e.getSource() == btnExcluir){
-			funcionarios.remove(listFuncionario.getSelectedIndex());
-			modelFuncionarios.remove(listFuncionario.getSelectedIndex());			
-		}
+			f.excluirFuncionario(listFuncionario.getSelectedValue());
+			
 		
-		showArray();
-	}
-	
-	//debugagem
-	public void showArray(){
-	
-		for(Funcionario f: funcionarios){			
-			System.out.println(f.getNome() + f.getRegistro() + f.getSexo());
-					
 		}
 	}
+	
+
 }

@@ -5,17 +5,8 @@ package almoxarifado.classes.logico;
  */
 public class Estoque {
     private Produto produto;
-    private int qtdMinima;
-    private int qtdAtual;
-    private int qtdMaxima;
 
-    public int getQtdMaxima() {
-        return qtdMaxima;
-    }
 
-    public void setQtdMaxima(int qtdMaxima) {
-        this.qtdMaxima = qtdMaxima;
-    }
     private int qtdComprar;
     private double valor;
     

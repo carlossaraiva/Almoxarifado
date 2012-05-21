@@ -18,6 +18,7 @@ public class Principal extends JFrame{
 				SwingUtilities.updateComponentTreeUI(principal);
 				JDesktop desktop = new JDesktop();
 				desktop.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
+				desktop.setBounds(80, 80, 1290, 720);
+				
 	}
 }

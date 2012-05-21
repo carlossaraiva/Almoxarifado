@@ -10,15 +10,45 @@ import javax.swing.JOptionPane;
 public class Produto {
     private String nome;
     private String marca;
+    private int qtdMinima;
+    private int qtdAtual;
+    private int qtdMaxima;
+    private double preco;
     
-    
-    
-    public Produto(){
-    }
-    public Produto(String nome, double preco, String marca){
+
+    public Produto(String nome, String marca){
         this.nome = nome;        
         this.marca = marca;
     }
+        
+    public Produto() {
+		
+	}
+
+	public int getQtdMinima() {
+		return qtdMinima;
+	}
+    
+	public void setQtdMinima(int qtdMinima) {
+		this.qtdMinima = qtdMinima;
+	}
+	
+	public int getQtdAtual() {
+		return qtdAtual;
+	}
+	
+	public void setQtdAtual(int qtdAtual) {
+		this.qtdAtual = qtdAtual;
+	}
+	
+	public int getQtdMaxima() {
+		return qtdMaxima;
+	}
+	
+	public void setQtdMaxima(int qtdMaxima) {
+		this.qtdMaxima = qtdMaxima;
+	}
+
     public String getNome(){
         return this.nome;
     }
@@ -34,12 +64,14 @@ public class Produto {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+	public double getPreco() {
+		return preco;
+	}
 
-
-    @Override
-    public String toString() {
-        return "Produto{" + "nome=" + nome  + " ,marca=" + marca +'}';
-    }
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
     
     public void insereProduto()
     {
@@ -49,7 +81,7 @@ public class Produto {
         conn.executaSQL(sql);
         conn.desconecta();
     }
-    public void alterarProduto()
+    public void alterarProduto(String nome, int i)
     {
         Conexao conn = new Conexao();
         conn.conecta();
@@ -57,6 +89,10 @@ public class Produto {
         conn.executaSQL(sql);
         conn.desconecta();
     }
+    
+
+    
+    
     public void excluirProduto(String nome)
     {
         Conexao conn = new Conexao();
@@ -74,6 +110,17 @@ public class Produto {
         ResultSet result = conn.executaBusca(sql);
         return result;
     }
+
+	@Override
+	public String toString() {
+		return "Produto [nome=" + nome + ", marca=" + marca + ", qtdMinima="
+				+ qtdMinima + ", qtdAtual=" + qtdAtual + ", qtdMaxima="
+				+ qtdMaxima + "]";
+	}
+
+
+    
+    
      
     
             

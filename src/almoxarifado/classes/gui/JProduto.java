@@ -2,12 +2,10 @@ package almoxarifado.classes.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,8 +22,9 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList <Produto> produtos = new ArrayList<Produto>();
+	private Produto p; 
 	private DefaultListModel<String> modelProdutos = new DefaultListModel<String>();
+
 	private JTextField txtNomeProduto;
 	private JTextField txtMarca;
 	private JTextField textField;	
@@ -42,21 +41,8 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 	public JProduto() {		
 		setPainel();		
 	}		
-	
-	public JProduto(ArrayList<Produto> produtos){		
-		setPainel();
-		this.produtos = produtos;		
-		setModelProdutos();
-	}
-	
-	//Setters e getters
-	
-	public void setModelProdutos(){
-		for(Produto p : produtos){
-			modelProdutos.addElement(p.getNome());
-		}	
-	}
-	
+
+
 	private void setPainel(){
 		setLayout(null);		
 		
@@ -98,8 +84,8 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 			public void keyReleased(KeyEvent arg0) 
 			{
 				modelProdutos.clear();
-				Produto pro = new Produto();
-				ResultSet result = pro.buscaProduto(textField.getText());
+				p = new Produto();
+				ResultSet result = p.buscaProduto(textField.getText());
 				try
 				{
 					while(result.next())
@@ -132,10 +118,6 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 	
 	}
 	
-	public ArrayList<Produto> getProdutos(){
-		return this.produtos;
-	}
-	
 	//Listeners
 	public void valueChanged(ListSelectionEvent e){
 		
@@ -151,7 +133,8 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 	        //Selection, enable the fire button.
 	            btnExcluir.setEnabled(true);
 	        }		    
-	    }		
+	    }	
+	    //Nessa parte é que será carregado os valores nas caixa de textos, puxando do banco de dados.
 	    if (e.getSource()==listProduto){
 	    	txtNomeProduto.setText((String)listProduto.getSelectedValue());
 	    }
@@ -160,29 +143,19 @@ public class JProduto extends JPanel implements ActionListener, ListSelectionLis
 	public void actionPerformed(ActionEvent e) {
 	
 		if (e.getSource() == btnAdicionar){
-			Produto p = new Produto();		
-			p.setNome(txtNomeProduto.getText());			
-			modelProdutos.addElement(p.getNome());
-			p.setMarca(txtMarca.getText());
-			produtos.add(p);						
+			p = new Produto(txtNomeProduto.getText(),txtMarca.getText());
+			p.insereProduto();
 			txtNomeProduto.setText(null);
 			txtMarca.setText(null);			
 		}
 		
 		if(e.getSource() == btnExcluir){
-			produtos.remove(listProduto.getSelectedIndex());
-			modelProdutos.remove(listProduto.getSelectedIndex());			
+			p.excluirProduto(listProduto.getSelectedValue());
+			
+		
 		}
 		
-		showArray();
+
 	}
 	
-	//debugem
-	public void showArray(){
-	
-		for(Produto p: produtos){			
-			System.out.println(p.getNome() + p.getMarca());
-					
-		}
-	}
 }
