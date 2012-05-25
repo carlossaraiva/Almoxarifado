@@ -1,5 +1,6 @@
 package almoxarifado.classes.logico;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -9,45 +10,46 @@ import javax.swing.JOptionPane;
  */
 public class Produto {
     private String nome;
+    private String preco;
     private String marca;
-    private int qtdMinima;
-    private int qtdAtual;
-    private int qtdMaxima;
-    private double preco;
-    
+    private String qtdMinima;
+    private String qtdAtual;
+    private String qtdMaxima;
 
-    public Produto(String nome, String marca){
-        this.nome = nome;        
+    public Produto(String nome, String preco, String marca, String qtdMinima, String qtdAtual, String qtdMaxima) {
+        this.nome = nome;
+        this.preco = preco;
         this.marca = marca;
+        this.qtdMinima = qtdMinima;
+        this.qtdAtual = qtdAtual;
+        this.qtdMaxima = qtdMaxima;
     }
         
-    public Produto() {
-		
-	}
+    public Produto(){}
 
-	public int getQtdMinima() {
-		return qtdMinima;
-	}
-    
-	public void setQtdMinima(int qtdMinima) {
-		this.qtdMinima = qtdMinima;
-	}
-	
-	public int getQtdAtual() {
-		return qtdAtual;
-	}
-	
-	public void setQtdAtual(int qtdAtual) {
-		this.qtdAtual = qtdAtual;
-	}
-	
-	public int getQtdMaxima() {
-		return qtdMaxima;
-	}
-	
-	public void setQtdMaxima(int qtdMaxima) {
-		this.qtdMaxima = qtdMaxima;
-	}
+    public String getQtdMinima() {
+            return qtdMinima;
+    }
+
+    public void setQtdMinima(String qtdMinima) {
+            this.qtdMinima = qtdMinima;
+    }
+
+    public String getQtdAtual() {
+            return qtdAtual;
+    }
+
+    public void setQtdAtual(String qtdAtual) {
+            this.qtdAtual = qtdAtual;
+    }
+
+    public String getQtdMaxima() {
+            return qtdMaxima;
+    }
+
+    public void setQtdMaxima(String qtdMaxima) {
+            this.qtdMaxima = qtdMaxima;
+    }
 
     public String getNome(){
         return this.nome;
@@ -65,39 +67,37 @@ public class Produto {
         this.nome = nome;
     }
     
-	public double getPreco() {
-		return preco;
-	}
+    public String getPreco() {
+            return preco;
+    }
 
-	public void setPreco(double preco) {
-		this.preco = preco;
-	}
+    public void setPreco(String preco) {
+            this.preco = preco;
+    }
     
-    public void insereProduto()
+    public void insereProduto(int catCodigo, int forCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "insert into Fornecedor values (forCodigo.nextval,'"+this.nome+"','"+this.marca+")";
+        String sql = "insert into Produto values (proCodigo.nextval, "+catCodigo+", "+forCodigo+", '"+this.nome+"', "+this.preco+", '"+this.marca+"', "+this.qtdMinima+", "+this.qtdAtual+", "+this.qtdMaxima+")";
+        System.out.println(sql);
         conn.executaSQL(sql);
         conn.desconecta();
     }
-    public void alterarProduto(String nome, int i)
+    public void alterarProduto(int proCodigo, int catCodigo, int forCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "update Produto set forNome = '"+this.nome+"', forMarca = '"+this.marca+"'";
-        conn.executaSQL(sql);
+        String sql = "update Produto set catCodigo = "+catCodigo+", proNome = '"+this.nome+"', proPreco = "+this.preco+", proMarca = '"+this.marca+"', proQtdMinima = "+this.qtdMinima+", proQtdAtua = "+this.qtdAtual+", proQtdMaxima = "+this.qtdMaxima+" where proCodigo = "+proCodigo+"";
+        System.out.print(sql);
+        conn.executaSQL(sql);        
         conn.desconecta();
     }
-    
-
-    
-    
-    public void excluirProduto(String nome)
+    public void excluirProduto(int proCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "delete from Produto where forNome = '"+nome+"'";
+        String sql = "delete from Produto where proCodigo = "+proCodigo+"";
         conn.executaSQL(sql);
         conn.desconecta();
     }
@@ -105,23 +105,8 @@ public class Produto {
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "select * from Produto where forNome like '%"+nome+"%'";
-        JOptionPane.showMessageDialog(null, sql);
+        String sql = "select * from Produto where proNome like '%"+nome+"%'";
         ResultSet result = conn.executaBusca(sql);
         return result;
     }
-
-	@Override
-	public String toString() {
-		return "Produto [nome=" + nome + ", marca=" + marca + ", qtdMinima="
-				+ qtdMinima + ", qtdAtual=" + qtdAtual + ", qtdMaxima="
-				+ qtdMaxima + "]";
-	}
-
-
-    
-    
-     
-    
-            
 }

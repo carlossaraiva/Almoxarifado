@@ -15,32 +15,79 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import java.awt.Component;
 
+import almoxarifado.classes.logico.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 
 public class JDesktop extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private JFuncionario jfuncionario;
 	private JProduto jproduto;
+        private JRelatorio jrelatorio;
 	private JFornecedor jfornecedor;
+	private JCategoria jcategoria;
 	private JEstoque jestoque;
 	
 	private JInternalFrame frmFornecedor;
 	private JInternalFrame frmProduto;
+        private JInternalFrame frmRelatorio;
 	private JInternalFrame frmFuncionario;
+	private JInternalFrame frmCategoria;
 	private JInternalFrame frmEstoque;
 	
 	private JMenuItem mntmProduto;
+        private JMenuItem mntmRelatorio;
 	private JMenuItem mntmFuncionario; 
+	private JMenuItem mntmCategoria;
 	private JMenuItem mntmFornecedor;
 	private JDesktopPane desktop;
+        
+    private JMenu mnFichaDeControle;
+    private JMenuItem mntmEntrada;
+    private JMenuItem mntmRelat;
+    private String tipNome;
+    
+        
 
-	public JDesktop(){
-		setMenuBar();
-		setIntFrames();
-		setVisible(true);
-		setBounds(0,0,1290,720);
-		
-	}
+	public JDesktop(String usuNome)
+        {
+            int tipCodigo = 0;
+            Funcionario fun = new Funcionario();
+            TipoUsuario tip = new TipoUsuario();
+            ResultSet usu = fun.buscaFuncionario(usuNome);
+            try
+            {
+               while(usu.next())
+               {
+                   tipCodigo = usu.getInt("tipCodigo");
+               } 
+            }catch(SQLException sqlex)
+            {
+                JOptionPane.showMessageDialog(null, "Erro ao verificar o tipo de usuario. Descri√ß√£o: "+sqlex.getLocalizedMessage()+".");
+            }
+            this.tipNome = tip.buscaCategoria(tipCodigo);
+            
+            if(this.tipNome.equals("Diretoria de servi√ßo"))
+            {
+                setMenuBar();
+                setIntFrames();
+                setVisible(true);
+                setBounds(0,0,1290,720);
+                mntmFuncionario.setVisible(true);
+                mntmProduto.setVisible(true);
+                mntmCategoria.setVisible(true);
+            }else
+            {
+                setMenuBar();
+                setIntFrames();
+                setVisible(true);
+                setBounds(0,0,1290,720);
+            }
+            
+        }
 	
 
 	
@@ -59,8 +106,15 @@ public class JDesktop extends JFrame implements ActionListener{
 		if(e.getSource() == mntmProduto){
 			frmProduto.setVisible(true);
 		}	
-
+                
+                if(e.getSource() == mntmRelatorio){
+			frmRelatorio.setVisible(true);
+		}
 		
+		if(e.getSource() == mntmCategoria){
+			frmCategoria.setVisible(true);
+		
+		}
 	}
 		
 	public void setMenuBar(){
@@ -75,25 +129,30 @@ public class JDesktop extends JFrame implements ActionListener{
 		menuBar.add(mnCadastro);
 		
 		mntmFuncionario = new JMenuItem("Funcionario");					
-		mnCadastro.add(mntmFuncionario);
 		mntmFuncionario.addActionListener(this);
+                mntmFuncionario.setVisible(true);
+		mnCadastro.add(mntmFuncionario);
 		
 		mntmProduto = new JMenuItem("Produto");
-		mnCadastro.add(mntmProduto);
 		mntmProduto.addActionListener(this);
+                mntmProduto.setVisible(true);
+		mnCadastro.add(mntmProduto);
 		
 		mntmFornecedor = new JMenuItem("Fornecedor");
 		mntmFornecedor.addActionListener(this);
 		mnCadastro.add(mntmFornecedor);
 		
-		JMenu mnFichaDeControle = new JMenu("Ficha de Controle");
+		mntmCategoria = new JMenuItem("Categorias");
+		mntmCategoria.addActionListener(this);
+                mntmCategoria.setVisible(true);                
+		mnCadastro.add(mntmCategoria);
+		
+		mnFichaDeControle = new JMenu("Ficha de Controle");
 		menuBar.add(mnFichaDeControle);
-		
-		JMenuItem mntmEntrada = new JMenuItem("Entrada");
-		mnFichaDeControle.add(mntmEntrada);
-		
-		JMenuItem mntmSada = new JMenuItem("Sa\u00EDda");
-		mnFichaDeControle.add(mntmSada);
+                
+                mntmRelatorio = new JMenuItem("Relatorio");
+                mntmRelatorio.addActionListener(this);
+		mnFichaDeControle.add(mntmRelatorio);
 		
 	}
 
@@ -111,6 +170,13 @@ public class JDesktop extends JFrame implements ActionListener{
 		frmProduto.setClosable(true);
 		jproduto = new JProduto();
 		frmProduto.getContentPane().add(jproduto);
+                
+                frmRelatorio = new JInternalFrame("Relatorio");
+		frmRelatorio.setFocusable(false);
+		frmRelatorio.setBounds(139, 70, 846, 500);
+		frmRelatorio.setClosable(true);
+		jrelatorio = new JRelatorio();
+		frmRelatorio.getContentPane().add(jrelatorio);
 		
 		//Frame Estoque, instancia a janela interna e inicia seus componentes;
 		frmEstoque = new JInternalFrame("Controle de Estoque");
@@ -119,10 +185,18 @@ public class JDesktop extends JFrame implements ActionListener{
 		frmEstoque.setBounds(331, 50, 709, 554);
 		frmEstoque.setFocusable(false);
 		frmEstoque.setClosable(false);
-        jestoque = new JEstoque();
-        frmEstoque.getContentPane().add(jestoque);
-	
-		//Frame Funcion·rio, instancia a janela interna e inicia seus componentes.
+                jestoque = new JEstoque(this.tipNome);
+                frmEstoque.getContentPane().add(jestoque);
+                //Frame FuncionÔøΩrio, instancia a janela interna e inicia seus componentes.
+		frmCategoria = new JInternalFrame("Categoria");
+		frmCategoria.setVisible(true);
+		frmCategoria.setBounds(70, 50, 646, 500);		
+		frmCategoria.setFocusable(false);
+		frmCategoria.getContentPane().setBounds(new Rectangle(0, 0, 0, 0));
+		frmCategoria.setClosable(true);
+		jcategoria = new JCategoria();
+		frmCategoria.getContentPane().add(jcategoria);
+		//Frame Funcion√°rio, instancia a janela interna e inicia seus componentes.
 		frmFuncionario = new JInternalFrame("Funcionario");
 		frmFuncionario.setBounds(50, 50, 646, 500);		
 		frmFuncionario.setFocusable(false);
@@ -131,15 +205,21 @@ public class JDesktop extends JFrame implements ActionListener{
 		jfuncionario = new JFuncionario();
 		frmFuncionario.getContentPane().add(jfuncionario);
 		desktop.add(frmProduto);
+                desktop.add(frmRelatorio);
+		desktop.add(frmCategoria);
 		desktop.add(frmFuncionario);
 		desktop.add(frmEstoque);
 		//desktopPane.add(frmEstoque);
-		//define os frames internos invisiveis por padr„o na inicializaÁ„o.
+		//define os frames internos invisiveis por padr√£o na inicializa√ß√£o.
 		frmEstoque.setVisible(true);
 		frmProduto.setVisible(false);
-        frmProduto.setDefaultCloseOperation(HIDE_ON_CLOSE);
+		frmCategoria.setVisible(false);
+                frmProduto.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		frmEstoque.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		frmFuncionario.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                frmCategoria.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                frmRelatorio.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                
 		
 		//Frame Fornecedor, instancia a janela interna e inicia seus componentes.
 		frmFornecedor = new JInternalFrame("Fornecedor");
@@ -153,16 +233,9 @@ public class JDesktop extends JFrame implements ActionListener{
 		frmFornecedor.getContentPane().add(jfornecedor);
 		frmFornecedor.setVisible(false);
 		
-		//Define padr„o para o fechaemento dos frames interno, esconder ao fechar ao invÈs de descartar a janela.
-        frmFornecedor.setDefaultCloseOperation(HIDE_ON_CLOSE);
+		//Define padr√£o para o fechaemento dos frames interno, esconder ao fechar ao inv√©s de descartar a janela.
+                frmFornecedor.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        
 
-		
-        /*
-        //Adiciona os listeners internos para eventos nos internal frames.        
-        frmFornecedor.addInternalFrameListener(this);
-        frmProduto.addInternalFrameListener(this);
-        frmFuncionario.addInternalFrameListener(this);
-		*/
-	}
-
+        }
 }

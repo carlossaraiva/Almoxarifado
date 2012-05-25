@@ -10,20 +10,29 @@ import javax.swing.JOptionPane;
  */
 public class Usuario {
     private String nome;
-    private int numIdentificacao;
     private String senha;
     private String login;
     private String sexo;
     
     public Usuario(){}
 
-    public Usuario(String nome, int numIdentificacao, String senha, String login) {
+    public Usuario(String nome, String login, String senha) {
         this.nome = nome;
-        this.numIdentificacao = numIdentificacao;
         this.senha = senha;
         this.login = login;
     }
-    
+    /*Procedimentos e funções para retornar os valores encapsulados*/
+    public void setSexo(String sexo){
+    	if (sexo == "'M" || sexo == "F" ){
+    		this.sexo = sexo;
+    	}
+    	else{
+    		System.out.println("Valor inv�lido para sexo.");
+    	}
+    }    
+    public String getSexo(){
+    	return this.sexo;
+    }
     public String getLogin() {
         return login;
     }
@@ -35,33 +44,9 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
-    
-    public void setSexo(String sexo){
-    	if (sexo == "'M" || sexo == "F" ){
-    		this.sexo = sexo;
-    	}
-    	else{
-    		System.out.println("Valor inv�lido para sexo.");
-    	}
-    }
-    
-    public String getSexo(){
-    	return this.sexo;
-    }
-    
-
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    public int getNumIdentificacao() {
-        return numIdentificacao;
-    }
-
-    public void setNumIdentificacao(int numIdentificacao) {
-        this.numIdentificacao = numIdentificacao;
-    }
-
     public String getSenha() {
         return senha;
     }
@@ -69,46 +54,50 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-    @Override
-    public String toString() {
-        return "Usuario{" + "nome=" + nome + ", numIdentificacao=" + numIdentificacao + ", senha=" + senha + ", login=" + login + '}';
-    }
     
-    public void insereUsuario()
+    public void insereUsuario(int tipCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "insert into Usuario values (forCodigo.nextval,'"+this.nome+"','"+this.login+"','"+this.numIdentificacao+"','"+this.senha+"','"+this.sexo+"')";
+        String sql = "insert into Usuario values (usuCodigo.nextval, "+tipCodigo+", '"+this.nome+"', '"+this.login+"', '"+this.senha+"', '"+this.sexo+"')";
+        System.out.print(sql);
+        conn.executaSQL(sql);
+        String sqle = "commit";
+        conn.executaBusca(sqle);
+        conn.desconecta();
+    }
+    public void alterarFornecedor(int usuCodigo, int tipCodigo)
+    {
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "update Usuario set tipCodigo = "+tipCodigo+", , usuNome = '"+this.nome+"', usuLogin = '"+this.login+"', usuSenha = '"+this.senha+"', usuSexo = '"+this.sexo+"' where usuCodigo = "+usuCodigo+"";
+        System.out.println(sql);
         conn.executaSQL(sql);
         conn.desconecta();
     }
-    public void alterarFornecedor()
+    public void excluirFornecedor(int usuCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "update Usuario set forNome = '"+this.nome+"', forNumIdentificacao = '"+this.numIdentificacao+"', forLogin = '"+this.login+"', forSenha = '"+this.sexo+"'where forSenha = 2";
+        String sql = "delete from Usuario where usuCodigo = '"+usuCodigo+"'";
         conn.executaSQL(sql);
         conn.desconecta();
     }
-    public void excluirFornecedor(String nome)
+    public ResultSet buscaUsuario(String nome)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "delete from Usuario where forNome = '"+nome+"'";
-        conn.executaSQL(sql);
-        conn.desconecta();
-    }
-    public ResultSet buscaFornecedor(String nome)
-    {
-        Conexao conn = new Conexao();
-        conn.conecta();
-        String sql = "select * from Usuario where forNome like '%"+nome+"%'";
-        JOptionPane.showMessageDialog(null, sql);
+        String sql = "select * from Usuario where usuNome like '%"+nome+"%'";
         ResultSet result = conn.executaBusca(sql);
         return result;
     }
-     
-    
+    public ResultSet buscaUsuarioCodigo(int usuCodigo)
+    {
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "select * from Usuario where usuCodigo = "+usuCodigo+"";
+        ResultSet result = conn.executaBusca(sql);
+        return result;
+    }
     
 }

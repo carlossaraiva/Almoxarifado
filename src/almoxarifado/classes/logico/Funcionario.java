@@ -1,81 +1,37 @@
 package almoxarifado.classes.logico;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-public class Funcionario {
-	private String nome;
-	private String registro;
-	private String sexo;
-	
-	
-	public Funcionario(){
-		
-	}
-	
-	public Funcionario(String nome, String registro, String sexo){	
-		this.nome = nome;
-		this.registro = registro;
-		setSexo(sexo);
-	}
-	
-	public String getNome() {
-		return nome;
-	}
-	
-    public void setSexo(String sexo){
-    	if (sexo == "'M" || sexo == "F" ){
-    		this.sexo = sexo;
-    	}
-    	else{
-    		System.out.println("Valor inv�lido para sexo.");
-    	}
-    }
+public class Funcionario extends Usuario{
     
-    public String getSexo(){
-    	return this.sexo;
+    /*Sobrecarga de construtores*/
+    public Funcionario(){		
+    }
+    public Funcionario(String nome, String login, String senha)
+    {	
+        super(nome, login, senha);
+    }
+    /*Chamo o metodo da classe pai e mando o parametro recebido*/
+    public void setSexo(String sexo){
+    	super.setSexo(sexo);    	
     }
 	
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getRegistro() {
-		return registro;
-	}
-
-	public void setRegistro(String registro) {
-		this.registro = registro;
-	}
-
-	@Override
-	public String toString() {
-		return "Funcionario [nome=" + nome + ", registro=" + registro + "]";
-	}
-	
-    public void insereFuncionario()
+    public void insereFuncionario(int tipCodigo)
     {
-        Conexao conn = new Conexao();
-        conn.conecta();
-        String sql = "insert into Funcionario values (forCodigo.nextval,'"+this.nome+"','"+this.registro+",'"+this.sexo+"')";
-        conn.executaSQL(sql);
-        conn.desconecta();
+        super.insereUsuario(tipCodigo);
     }
-    public void alterarProduto()
+    public void alterarFuncionario(int usuCodigo, int tipCodigo)
     {
-        Conexao conn = new Conexao();
-        conn.conecta();
-        String sql = "update Funcionario set forNome = '"+this.nome+"', forRegistro = '"+this.registro+"', forSexo = '"+this.sexo+"')";
-        conn.executaSQL(sql);
-        conn.desconecta();
+        super.alterarFornecedor(usuCodigo, tipCodigo);
     }
-    public void excluirFuncionario(String nome)
+    public void excluirFuncionario(int usuCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "delete from Funcionario where forNome = '"+nome+"'";
+        String sql = "delete from Usuario where usuCodigo = '"+usuCodigo+"'";
         conn.executaSQL(sql);
         conn.desconecta();
     }
@@ -83,13 +39,33 @@ public class Funcionario {
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "select * from Funcionario where forNome like '%"+nome+"%'";
-        JOptionPane.showMessageDialog(null, sql);
+        String sql = "select * from Usuario where usuNome like '%"+nome+"%'";
         ResultSet result = conn.executaBusca(sql);
         return result;
     }
-
-	
-	
-	
+    
+    public String logarFuncionario(String funLogin, String funSenha)
+    {
+        String usuNome = "";
+        Conexao conn = new Conexao();
+        conn.conecta();
+        String sql = "select usuLogin, usuSenha, usuNome from Usuario where usuLogin = '"+funLogin+"' and usuSenha = '"+funSenha+"'";
+        
+        ResultSet resultado = conn.executaBusca(sql);
+        try
+        {
+            while(resultado.next())
+            {
+                usuNome = resultado.getString("usuNome");
+            }
+        }catch(SQLException sqlex)
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar no banco descrição: "+sqlex.getLocalizedMessage()+".");
+        }
+        if(usuNome == "")
+        {
+            JOptionPane.showMessageDialog(null, "Usuario ou senha inválidos.");
+        }
+        return usuNome;
+    }
 }

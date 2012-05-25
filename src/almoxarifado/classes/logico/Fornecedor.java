@@ -10,26 +10,18 @@ import javax.swing.JOptionPane;
  */
 public class Fornecedor {
     private String nome;
-    private String telefone;
-    private String endereco;
     private String CNPJ;
+    private String telefone;
 
-
-    public Fornecedor(String RzSocial, String CNPJ) {
+    public Fornecedor(String RzSocial, String CNPJ, String telefone) {
         this.nome = RzSocial;
         //this.telefone = telefone;
         this.CNPJ = CNPJ;
+        this.telefone = telefone;
     }
     
 
-    public Fornecedor() {
-		// TODO Auto-generated constructor stub
-	}
-
-
-	public String getRzSocial() {
-        return nome;
-    }
+    public Fornecedor(){}
 
     public void setRzSocial(String RzSocial) {
         this.nome = RzSocial;
@@ -49,42 +41,30 @@ public class Fornecedor {
     
     public String getCNPJ(){
     	return this.CNPJ;
-    }
-    
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    @Override
-    public String toString() {
-        return "Fornecedor{" + "nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + '}';
     }  
     
     public void insereFornecedor()
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "insert into Fornecedor values (forCodigo.nextval,'"+this.nome+"','"+this.endereco+"','"+this.telefone+"')";
+        String sql = "insert into Fornecedor values (forCodigo.nextval, '"+this.nome+"', '"+this.CNPJ+"','"+this.telefone+"')";
+        System.out.println(sql);
         conn.executaSQL(sql);
         conn.desconecta();
     }
-    public void alterarFornecedor()
+    public void alterarFornecedor(int forCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "update Fornecedor set forNome = '"+this.nome+"', forEndereco = '"+this.endereco+"', forTelefone = '"+this.telefone+"'where forCodigo = 2";
+        String sql = "update Fornecedor set forNome = '"+this.nome+"', forEndereco = '"+this.CNPJ+"', forTelefone = '"+this.telefone+"' where forCodigo = "+forCodigo+"";
         conn.executaSQL(sql);
         conn.desconecta();
     }
-    public void excluirFornecedor(String nome)
+    public void excluirFornecedor(int forCodigo)
     {
         Conexao conn = new Conexao();
         conn.conecta();
-        String sql = "delete from Fornecedor where forNome = '"+nome+"'";
+        String sql = "delete from Fornecedor where forCodigo = "+forCodigo+"";
         conn.executaSQL(sql);
         conn.desconecta();
     }
@@ -93,7 +73,6 @@ public class Fornecedor {
         Conexao conn = new Conexao();
         conn.conecta();
         String sql = "select * from Fornecedor where forNome like '%"+nome+"%'";
-        JOptionPane.showMessageDialog(null, sql);
         ResultSet result = conn.executaBusca(sql);
         return result;
     }
